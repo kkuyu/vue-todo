@@ -5,7 +5,7 @@
         ref="titleInput"
         :value="editedTitle"
         type="text"
-        @input="editedTitle = $event.target.vlaue"
+        @input="editedTitle = $event.target.value"
         @keypress.enter="editedTodo"
         @keypress.esc="offEditMode"
       />

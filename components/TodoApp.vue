@@ -1,14 +1,34 @@
 <template>
-  <div>
-    <todo-item
-      v-for="todo in todos"
-      :key="todo.id"
-      :todo="todo"
-      @update-todo="updateTodo"
-      @delete-todo="deleteTodo"
-    />
+  <div class="todo-app">
+    <div class="todo-app__actions">
+      <div class="filters">
+        <button :class="{active: filter==='all'}" type="button" @click="changeFilter('all')">
+          모든 항목 ({{total
+          }})
+        </button>
+        <button
+          :class="{active: filter==='active'}"
+          type="button"
+          @click="changeFilter('active')"
+        >해야 할 항목 ({{activeCount}})</button>
+        <button
+          :class="{active: filter==='completed'}"
+          type="button"
+          @click="changeFilter('completed')"
+        >완료된 항목 ({{completedCount}})</button>
+      </div>
+    </div>
+    <div class="todo-app__list">
+      <todo-item
+        v-for="todo in filteredTodos"
+        :key="todo.id"
+        :todo="todo"
+        @update-todo="updateTodo"
+        @delete-todo="deleteTodo"
+      />
+    </div>
     <hr />
-    <todo-creator @create-todo="createTodo" />
+    <todo-creator class="todo-app__creator" @create-todo="createTodo" />
   </div>
 </template>
 
@@ -32,8 +52,32 @@ export default {
   data() {
     return {
       db: null,
-      todos: []
+      todos: [],
+      filter: "all"
     };
+  },
+  computed: {
+    filteredTodos() {
+      switch (this.filter) {
+        case "all":
+        default:
+          return this.todos;
+        case "active":
+          return this.todos.filter(todo => !todo.done);
+        case "completed":
+          return this.todos.filter(todo => todo.done);
+      }
+      //   return this.todos;
+    },
+    total() {
+      return this.todos.length;
+    },
+    activeCount() {
+      return this.todos.filter(todo => !todo.done).length;
+    },
+    completedCount() {
+      return this.total - this.activeCount;
+    }
   },
   created() {
     this.initDB();
@@ -94,7 +138,16 @@ export default {
 
       const foundIndex = _findIndex(this.todos, { id: todo.id });
       this.$delete(this.todos, foundIndex);
+    },
+    changeFilter(filter) {
+      this.filter = filter;
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+button.active {
+  font-weight: bold;
+}
+</style>

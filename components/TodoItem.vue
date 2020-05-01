@@ -1,13 +1,29 @@
 <template>
   <div class="todo-item">
-    <input type="checkbox" v-model="done" />
-    <div class="item__title-wrap">
-      <div class="item__title">{{todo.title}}</div>
-      <div class="item__date">{{date}}</div>
+    <div v-if="isEditMode" class="item__inner item--edit">
+      <input
+        ref="titleInput"
+        :value="editedTitle"
+        type="text"
+        @input="editedTitle = $event.target.vlaue"
+        @keypress.enter="editedTodo"
+        @keypress.esc="offEditMode"
+      />
+      <div class="item__actions">
+        <button key="complete" type="button" @click="editedTodo">완료</button>
+        <button key="cancel" type="button" @click="offEditMode">취소</button>
+      </div>
     </div>
-    <div class="item__actions">
-      <button type="button" @click="onEditMode">수정</button>
-      <button type="button" @click="deleteTodo">삭제</button>
+    <div v-else class="item__inner item--normal">
+      <input type="checkbox" v-model="done" />
+      <div class="item__title-wrap">
+        <div class="item__title">{{todo.title}}</div>
+        <div class="item__date">{{date}}</div>
+      </div>
+      <div class="item__actions">
+        <button key="update" type="button" @click="onEditMode">수정</button>
+        <button key="delete" type="button" @click="deleteTodo">삭제</button>
+      </div>
     </div>
   </div>
 </template>
@@ -18,6 +34,12 @@ import dayjs from "dayjs";
 export default {
   props: {
     todo: Object
+  },
+  data() {
+    return {
+      isEditMode: false,
+      editedTitle: ""
+    };
   },
   computed: {
     done: {
@@ -42,8 +64,27 @@ export default {
     }
   },
   methods: {
-    onEditMode() {},
-    offEditMode() {},
+    editedTodo() {
+      if (this.todo.title !== this.editedTitle) {
+        this.updateTodo({
+          title: this.editedTitle,
+          updateAt: new Date()
+        });
+      }
+
+      this.offEditMode();
+    },
+    onEditMode() {
+      this.isEditMode = true;
+      this.editedTitle = this.todo.title;
+
+      this.$nextTick(() => {
+        this.$refs.titleInput.focus();
+      });
+    },
+    offEditMode() {
+      this.isEditMode = false;
+    },
     updateTodo(value) {
       this.$emit("update-todo", this.todo, value);
     },

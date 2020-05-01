@@ -6,6 +6,9 @@
 </template>
 
 <script>
+import lowdb from "lowdb";
+import LocalStorage from "lowdb/adapters/LocalStorage";
+
 import TodoCreator from "./TodoCreator";
 import TodoItem from "./TodoItem";
 
@@ -13,6 +16,27 @@ export default {
   components: {
     TodoCreator,
     TodoItem
+  },
+  data() {
+    return {
+      db: null
+    };
+  },
+  created() {
+    this.initDB();
+  },
+  methods: {
+    initDB() {
+      const adapter = new LocalStorage("todo-app");
+      this.db = lowdb(adapter);
+
+      // Local DB 초기화
+      this.db
+        .defaults({
+          todo: [] // Collection
+        })
+        .write();
+    }
   }
 };
 </script>

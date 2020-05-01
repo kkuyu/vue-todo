@@ -19,6 +19,7 @@ import cryptoRandomString from "crypto-random-string";
 import _cloneDeep from "lodash/cloneDeep";
 import _find from "lodash/find";
 import _assign from "lodash/assign";
+import _findIndex from "lodash/findIndex";
 
 import TodoCreator from "./TodoCreator";
 import TodoItem from "./TodoItem";
@@ -85,8 +86,14 @@ export default {
       const foundTodo = _find(this.todos, { id: todo.id });
       _assign(foundTodo, value);
     },
-    deleteTodo() {
-      console.log("deleteTodo");
+    deleteTodo(todo) {
+      this.db
+        .get("todos")
+        .remove({ id: todo.id })
+        .write();
+
+      const foundIndex = _findIndex(this.todos, { id: todo.id });
+      this.$delete(this.todos, foundIndex);
     }
   }
 };

@@ -1,13 +1,14 @@
 <template>
   <div>
     <todo-item />
-    <todo-creator />
+    <todo-creator @create-todo="createTodo" />
   </div>
 </template>
 
 <script>
 import lowdb from "lowdb";
 import LocalStorage from "lowdb/adapters/LocalStorage";
+import CryptoRandomString from "crypto-random-string";
 
 import TodoCreator from "./TodoCreator";
 import TodoItem from "./TodoItem";
@@ -33,8 +34,22 @@ export default {
       // Local DB 초기화
       this.db
         .defaults({
-          todo: [] // Collection
+          todos: [] // Collection
         })
+        .write();
+    },
+    createTodo(title) {
+      const newTodo = {
+        id: CryptoRandomString({ length: 10 }),
+        title,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        done: false
+      };
+
+      this.db
+        .get("todos")
+        .push(newTodo)
         .write();
     }
   }

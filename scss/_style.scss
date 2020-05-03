@@ -125,6 +125,20 @@ section.about {
   h2 {
     font-size: 28px;
   }
+  nav {
+	  margin-top:30px;
+	button {
+    margin: 0 auto;
+    padding: 5px;
+		font-size: 40px;
+		font-weight: 700;
+		color: $color__white;
+		opacity:0.5;
+		&:hover {
+			opacity:1;
+		}
+	}
+  }
 }
 section.home h2:hover {
   cursor: pointer;

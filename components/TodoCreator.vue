@@ -8,7 +8,9 @@
       @input="title = $event.target.value"
       @keypress.enter="createTodo"
     />
-    <button type="button" @click="createTodo">추가</button>
+    <button type="button" @click="createTodo">
+      <i class="material-icons">add</i>
+    </button>
   </div>
 </template>
 

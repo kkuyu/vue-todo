@@ -10,19 +10,32 @@
         @keypress.esc="offEditMode"
       />
       <div class="item__actions">
-        <button key="complete" type="button" @click="editedTodo">완료</button>
-        <button key="cancel" type="button" @click="offEditMode">취소</button>
+        <button class="btn btn--primary" key="complete" type="button" @click="editedTodo">
+          <i class="material-icons">done</i>
+        </button>
+        <button class="btn" key="cancel" type="button" @click="offEditMode">
+          <i class="material-icons">clear</i>
+        </button>
       </div>
     </div>
     <div v-else class="item__inner item--normal">
-      <input type="checkbox" v-model="done" />
+      <label>
+        <input type="checkbox" v-model="done" />
+        <span class="icon">
+          <i class="material-icons">check</i>
+        </span>
+      </label>
       <div class="item__title-wrap">
         <div class="item__title">{{todo.title}}</div>
         <div class="item__date">{{date}}</div>
       </div>
       <div class="item__actions">
-        <button key="update" type="button" @click="onEditMode">수정</button>
-        <button key="delete" type="button" @click="deleteTodo">삭제</button>
+        <button class="btn" key="update" type="button" @click="onEditMode">
+          <i class="material-icons">edit</i>
+        </button>
+        <button class="btn btn--danger" key="delete" type="button" @click="deleteTodo">
+          <i class="material-icons">delete</i>
+        </button>
       </div>
     </div>
   </div>
@@ -94,20 +107,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.todo-item {
-  margin-bottom: 10px;
-  .item__inner {
-    display: flex;
-  }
-  .item__date {
-    font-size: 14px;
-  }
-  &.done {
-    .item__title {
-      text-decoration: line-through;
-    }
-  }
-}
-</style>

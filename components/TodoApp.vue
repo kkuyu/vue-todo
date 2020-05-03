@@ -17,9 +17,26 @@
           @click="changeFilter('completed')"
         >완료된 항목 ({{completedCount}})</button>
       </div>
-      <div class="actions">
-        <input v-model="allDone" type="checkbox" />
-        <button type="button" @click="clearCompleted">완료된 항목 삭제</button>
+      <div class="actions clearfix">
+        <div class="float--left">
+          <label>
+            <input v-model="allDone" type="checkbox" />
+            <span class="icon">
+              <i class="material-icons">done_all</i>
+            </span>
+          </label>
+        </div>
+        <div class="float--right clearfix">
+          <button class="btn float--left" type="button" @click="scrollToTop">
+            <i class="material-icons">expand_less</i>
+          </button>
+          <button class="btn float--left" type="button" @click="scrollToBottom">
+            <i class="material-icons">expand_more</i>
+          </button>
+          <button class="btn float--left btn--danger" type="button" @click="clearCompleted">
+            <i class="material-icons">delete_sweep</i>
+          </button>
+        </div>
       </div>
     </div>
     <div class="todo-app__list">
@@ -31,7 +48,6 @@
         @delete-todo="deleteTodo"
       />
     </div>
-    <hr />
     <todo-creator class="todo-app__creator" @create-todo="createTodo" />
   </div>
 </template>
@@ -45,6 +61,7 @@ import _find from "lodash/find";
 import _assign from "lodash/assign";
 import _findIndex from "lodash/findIndex";
 import _forEachRight from "lodash/forEachRight";
+import scrollTo from "scroll-to";
 
 import TodoCreator from "./TodoCreator";
 import TodoItem from "./TodoItem";
@@ -195,13 +212,23 @@ export default {
           this.deleteTodo(todo);
         }
       });
+    },
+    scrollToTop() {
+      scrollTo(0, 0, {
+        ease: "linear",
+        duration: 800
+      });
+    },
+    scrollToBottom() {
+      scrollTo(0, document.body.scrollHeight, {
+        ease: "linear",
+        duration: 800
+      });
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-button.active {
-  font-weight: bold;
-}
+<style lang="scss">
+@import "../scss/style";
 </style>

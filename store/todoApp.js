@@ -147,7 +147,7 @@ export default {
 
       // Vue.delete(state.todos, foundIndex);
       commit("deleteTodo", foundIndex);
-    },    
+    },
     completeAll({ state, commit }, checked) {
       // DB
       const newTodos = state.db
@@ -166,7 +166,8 @@ export default {
       //   this.todos.forEach(todo => {
       //     todo.done = checked;
       //   });
-      state.todos = _cloneDeep(newTodos);
+	  //   state.todos = _cloneDeep(newTodos);
+	  commit("assignTodos", _cloneDeep(newTodos));
     },
     clearCompleted({ state, dispatch }) {
       _forEachRight(state.todos, todo => {

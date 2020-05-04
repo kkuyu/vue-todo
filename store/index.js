@@ -5,7 +5,7 @@ import todoApp from "./todoApp"
 
 Vue.use(Vuex);
 
-export default new Vue.Store({
+export default new Vuex.Store({
   strict: process.env.node_env !== 'production',
   // // Data
   // state: {},
@@ -18,4 +18,4 @@ export default new Vue.Store({
   modules: {
     todoApp
   }
-})
+});

@@ -10,11 +10,11 @@ require('@babel/polyfill')
 module.exports = (env, opts) => {
   const config = {
     resolve: {
-	  extensions: ['.vue', '.js'],
-	  alias: {
-		  "~": path.join(__dirname),
-		  "scss": path.join(__dirname, "./scss")
-	  }
+      extensions: ['.vue', '.js'],
+      alias: {
+        "~": path.join(__dirname),
+        "scss": path.join(__dirname, "./scss")
+      }
     },
     entry: {
       app: ['@babel/polyfill', path.join(__dirname, 'main.js')]

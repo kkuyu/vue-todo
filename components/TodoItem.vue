@@ -100,14 +100,14 @@ export default {
     },
     updateTodo(value) {
       //   this.$emit("update-todo", this.todo, value);
-      this.$store.dispatch("updateTodo", {
+      this.$store.dispatch("todoApp/updateTodo", {
         todo: this.todo,
         value
       });
     },
     deleteTodo() {
       //   this.$emit("delete-todo", this.todo);
-      this.$store.dispatch("deleteTodo", this.todo);
+      this.$store.dispatch("todoApp/deleteTodo", this.todo);
     }
   }
 };

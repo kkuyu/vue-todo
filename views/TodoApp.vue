@@ -60,12 +60,6 @@ export default {
     TodoCreator,
     TodoItem
   },
-  data() {
-    return {
-      db: null,
-      todos: []
-    };
-  },
   computed: {
     filteredTodos() {
       switch (this.$route.params.id) {
@@ -78,15 +72,6 @@ export default {
           return this.todos.filter(todo => todo.done);
       }
       //   return this.todos;
-    },
-    total() {
-      return this.todos.length;
-    },
-    activeCount() {
-      return this.todos.filter(todo => !todo.done).length;
-    },
-    completedCount() {
-      return this.total - this.activeCount;
     },
     allDone: {
       get() {
@@ -101,23 +86,6 @@ export default {
     this.initDB();
   },
   methods: {
-    initDB() {
-      const adapter = new LocalStorage("todo-app");
-      this.db = lowdb(adapter);
-
-      const hasTodos = this.db.has("todos").value();
-
-      if (hasTodos) {
-        this.todos = _cloneDeep(this.db.getState().todos);
-      } else {
-        // Local DB 초기화
-        this.db
-          .defaults({
-            todos: [] // Collection
-          })
-          .write();
-      }
-    },
     createTodo(title) {
       const newTodo = {
         id: cryptoRandomString({ length: 10 }),

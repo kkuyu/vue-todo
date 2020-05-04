@@ -50,19 +50,12 @@ export default {
   computed: {
     // Helpers
     ...mapState("todoApp", ["todos"]),
-    ...mapGetters("todoApp", ["total", "activeCount", "completedCount"]),
-    filteredTodos() {
-      switch (this.$route.params.id) {
-        case "all":
-        default:
-          return this.todos;
-        case "active":
-          return this.todos.filter(todo => !todo.done);
-        case "completed":
-          return this.todos.filter(todo => todo.done);
-      }
-      //   return this.todos;
-    },
+    ...mapGetters("todoApp", [
+      "filteredTodos",
+      "total",
+      "activeCount",
+      "completedCount"
+    ]),
     allDone: {
       get() {
         return this.total === this.completedCount && this.total > 0;
@@ -72,10 +65,18 @@ export default {
       }
     }
   },
+  watch: {
+    $route() {
+      //   state.filter = this.$route.params.id;
+      //   this.$store.commit("todoApp/updateFilter", this.$route.params.id);
+      this.updateFilter(this.$route.params.id);
+    }
+  },
   created() {
     this.initDB();
   },
   methods: {
+    ...mapMutations("todoApp", ["updateFilter"]),
     ...mapActions("todoApp", ["initDB", "completeAll", "clearCompleted"]),
     scrollToTop() {
       scrollTo(0, 0, {

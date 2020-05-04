@@ -12,9 +12,21 @@ export default {
   namespaced: true,
   state: () => ({
     db: null,
-    todos: []
+    todos: [],
+    filter: "all"
   }),
   getters: {
+    filteredTodos(state) {
+      switch (state.filter) {
+        case "all":
+        default:
+          return state.todos;
+        case "active":
+          return state.todos.filter(todo => !todo.done);
+        case "completed":
+          return state.todos.filter(todo => todo.done);
+      }
+    },
     total(state) {
       return state.todos.length;
     },
@@ -64,6 +76,9 @@ export default {
     },
     pushTodo(state, newTodo) {
       state.todos.push(newTodo);
+    },
+    updateFilter(state, filter) {
+      state.filter = filter;
     }
   },
   actions: {

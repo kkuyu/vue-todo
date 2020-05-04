@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import scrollTo from "scroll-to";
 
 import TodoCreator from "~/components/TodoCreator";
@@ -76,6 +76,7 @@ export default {
     this.initDB();
   },
   methods: {
+    ...mapActions("todoApp", ["initDB", "completeAll", "clearCompleted"]),
     scrollToTop() {
       scrollTo(0, 0, {
         ease: "linear",

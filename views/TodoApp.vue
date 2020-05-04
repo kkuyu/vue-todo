@@ -42,14 +42,10 @@
 </template>
 
 <script>
-import lowdb from "lowdb";
-import LocalStorage from "lowdb/adapters/LocalStorage";
-import cryptoRandomString from "crypto-random-string";
 import _cloneDeep from "lodash/cloneDeep";
 import _find from "lodash/find";
-import _assign from "lodash/assign";
-import _findIndex from "lodash/findIndex";
 import _forEachRight from "lodash/forEachRight";
+
 import scrollTo from "scroll-to";
 
 import TodoCreator from "~/components/TodoCreator";
@@ -86,18 +82,6 @@ export default {
     this.initDB();
   },
   methods: {
-    updateTodo(todo, value) {
-      this.db
-        .get("todos")
-        .find({
-          id: todo.id
-        })
-        .assign(value)
-        .write();
-
-      const foundTodo = _find(this.todos, { id: todo.id });
-      _assign(foundTodo, value);
-    },
     deleteTodo(todo) {
       this.db
         .get("todos")

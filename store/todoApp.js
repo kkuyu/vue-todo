@@ -1,3 +1,9 @@
+import lowdb from "lowdb";
+import LocalStorage from "lowdb/adapters/LocalStorage";
+import cryptoRandomString from "crypto-random-string";
+import _assign from "lodash/assign";
+import _findIndex from "lodash/findIndex";
+
 export default {
   namespaced: true,
   state: () => ({
@@ -18,6 +24,18 @@ export default {
   mutations: {
     assignDB(state, db) {
       state.db = db;
+    },
+    updateDB(state, { todo, value }) {
+      state.db
+        .get("todos")
+        .find({
+          id: todo.id
+        })
+        .assign(value)
+        .write();
+    },
+    assignTodo(state, { foundTodo, value }){
+      _assign(foundTodo, value);
     },
     assignTodos(state, todos) {
       state.todos = todos;
@@ -71,6 +89,21 @@ export default {
       // Create Client
       // state.todos.push(newTodo);
       commit("pushTodo", newTodo);
+    },
+    updateTodo({ state, commit }, { todo, value }) {
+      // state.db
+      //   .get("todos")
+      //   .find({
+      //     id: todo.id
+      //   })
+      //   .assign(value)
+      //   .write();
+      commit("updateDB", { todo, value });
+
+      const foundTodo = _find(state.todos, { id: todo.id });
+      
+      // _assign(foundTodo, value);
+      commit("assignTodo", { foundTodo, value });
     }
   }
 }

@@ -21,6 +21,15 @@ export default {
     },
     assignTodos(state, todos) {
       state.todos = todos;
+    },
+    createDB(state, newTodo) {
+      state.db
+        .get("todos")
+        .push(newTodo)
+        .write();
+    },
+    pushTodo(state, newTodo) {
+      state.todos.push(newTodo);
     }
   },
   actions: {
@@ -42,6 +51,26 @@ export default {
           })
           .write();
       }
+    },
+    createTodo({ state, commit }, title) {
+      const newTodo = {
+        id: cryptoRandomString({ length: 10 }),
+        title,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        done: false
+      };
+
+      // Create DB
+      // state.db
+      //   .get("todos")
+      //   .push(newTodo)
+      //   .write();
+      commit("createDB", newTodo);
+
+      // Create Client
+      // state.todos.push(newTodo);
+      commit("pushTodo", newTodo);
     }
   }
 }

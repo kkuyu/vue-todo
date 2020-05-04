@@ -42,10 +42,6 @@
 </template>
 
 <script>
-import _cloneDeep from "lodash/cloneDeep";
-import _find from "lodash/find";
-import _forEachRight from "lodash/forEachRight";
-
 import scrollTo from "scroll-to";
 
 import TodoCreator from "~/components/TodoCreator";
@@ -82,56 +78,6 @@ export default {
     this.initDB();
   },
   methods: {
-    deleteTodo(todo) {
-      this.db
-        .get("todos")
-        .remove({ id: todo.id })
-        .write();
-
-      const foundIndex = _findIndex(this.todos, { id: todo.id });
-      this.$delete(this.todos, foundIndex);
-    },
-    completeAll(checked) {
-      // DB
-      const newTodos = this.db
-        .get("todos")
-        .forEach(todo => {
-          todo.done = checked;
-        })
-        .write();
-
-      // Local todos
-      //   this.todos.forEach(todo => {
-      //     todo.done = checked;
-      //   });
-      this.todos = _cloneDeep(newTodos);
-    },
-    clearCompleted() {
-      //   this.todos.forEach(todo => {
-      //     if (todo.done) {
-      //       this.deleteTodo(todo);
-      //     }
-
-      // vanilla
-      //   });
-      //   this.todos
-      //     .reduce((list, todo, index) => {
-      //       if (todo.done) {
-      //         list.push(index);
-      //       }
-      //       return list;
-      //     }, [])
-      //     .reverse()
-      //     .forEach(index => {
-      //       this.deleteTodo(this.todos[index]);
-      //     });
-
-      _forEachRight(this.todos, todo => {
-        if (todo.done) {
-          this.deleteTodo(todo);
-        }
-      });
-    },
     scrollToTop() {
       scrollTo(0, 0, {
         ease: "linear",
